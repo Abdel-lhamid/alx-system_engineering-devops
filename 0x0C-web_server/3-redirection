@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Install Nginx if not already installed
+if ! command -v nginx &> /dev/null; then
+    apt-get update
+    apt-get install -y nginx
+fi
+
+# Define the redirection configuration
+redirection_config=$(cat <<EOF
+server {
+    listen 80;
+    server_name _;
+
+    location /redirect_me {
+        return 301 https://www.example.com/new_page;
+    }
+
+    # Disable default Nginx welcome page
+    location / {
+        return 404;
+    }
+}
+EOF
+)
+
+# Update Nginx default configuration file with redirection configuration using sed
+sed -i '/^# Default server configuration/a \\n'"$redirection_config" /etc/nginx/sites-available/default
+
+# Test Nginx configuration
+nginx -t
+
+# Reload Nginx to apply changes
+systemctl reload nginx
