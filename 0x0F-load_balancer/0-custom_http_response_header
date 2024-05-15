@@ -1,28 +1,22 @@
-#!/usr/bin/env bash
-# sets up a new 404 error page
-sudo apt-get update
-sudo apt-get install -y nginx
+#!/bin/bash
 
-echo "Hello World!" > index.html
-sudo mv index.html /var/www/html/index.nginx-debian.html
+# 1. Install Nginx
+apt-get update
+apt-get install -y nginx
 
+# 2. Make the home page return "Hello World!"
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
 
-echo "Ceci n'est pas une page" > 404.html
-sudo mv 404.html /var/www/html
+# 3. Permanent redirection of /redirect_me to https://www.youtube.com/watch?v=QH2-TGUlwu4
+sudo sed -i '/server_name _;/a\        rewrite ^/redirect_me$ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-enabled/default
 
-echo "server {
-   listen 80 default_server;
-   listen [::]:80 default_server;
-   root /var/www/html;
-   index index.html;
-   location /redirect_me {
-      return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-   }
-   error_page 404 /404.html;
-   location = /404.html{
-      internal;
-   }
-   add_header X-Served-By $hostname;
-}" > default
-sudo mv -f default /etc/nginx/sites-available/default
+# 4. 404 page with content "Ceci n'est pas une page"
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+sudo sed -i '/server_name _;/a\        error_page 404 /404.html;' /etc/nginx/sites-enabled/default
+
+# 5. Add custom HTTP header X-Served-By with hostname value
+hostname=$(hostname)
+sudo sed -i "/server_name _;/a\        add_header X-Served-By $hostname;" /etc/nginx/sites-enabled/default
+
+# Start nginx server
 sudo service nginx start
