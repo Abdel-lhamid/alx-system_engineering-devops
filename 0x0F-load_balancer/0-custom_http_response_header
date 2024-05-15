@@ -1,5 +1,5 @@
-#!/bin/bash
-
+#!/usr/bin/env
+# script to configure a fresh server to the requirements
 # 1. Install Nginx
 apt-get update
 apt-get install -y nginx
