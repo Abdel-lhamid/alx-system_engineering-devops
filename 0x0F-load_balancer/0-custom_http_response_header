@@ -4,7 +4,7 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 echo "Hello World!" > index.html
-sudo mv index.html /var/www/html
+sudo mv index.html /var/www/html/index.nginx-debian.html
 
 
 echo "Ceci n'est pas une page" > 404.html
