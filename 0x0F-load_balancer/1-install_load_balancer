@@ -9,7 +9,7 @@ echo "ENABLED=1" > /etc/default/haproxy
 
 # Append configuration to haproxy.cfg
 echo "
-frontend load_balancer
+frontend abdel-hamid.tech
         bind *:80
         mode http
         default_backend servers
@@ -21,4 +21,4 @@ backend servers
 
 sudo ufw allow 80/tcp
 # Start HAProxy service
-sudo service haproxy start
+sudo service haproxy restart
