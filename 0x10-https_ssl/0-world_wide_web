@@ -1,5 +1,5 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
+# Bash script displays DNS records: record type, IP, subdomains
 # Function to display subdomain information
 display_info() {
 	local domain=$1
