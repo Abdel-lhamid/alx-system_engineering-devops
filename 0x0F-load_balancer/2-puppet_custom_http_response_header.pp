@@ -10,19 +10,13 @@ package { 'nginx':
   ensure => 'installed',
 }
 
-$file_contents = file('/etc/nginx/sites-enabled/default').content
-
-if !($file_contents =~ /^(\s+)add_header X-Served-By/) {
-  file_line { 'custom_header':
-    ensure  => present,
-    path    => '/etc/nginx/sites-enabled/default',
-    line    => "    add_header X-Served-By '${::hostname}';",
-    after   => '    root /var/www/html;'
-  }
+-> file_line { 'http_header':
+  path  => '/etc/nginx/nginx.conf',
+  match => 'http {',
+  line  => "http {\n\tadd_header X-Served-By \"${hostname}\";",
 }
 
-service { 'nginx':
-  ensure    => 'running',
-  enable    => true,
-  subscribe => File_line['custom_header'],
+-> exec {'run':
+  command => '/usr/sbin/service nginx restart',
 }
+
