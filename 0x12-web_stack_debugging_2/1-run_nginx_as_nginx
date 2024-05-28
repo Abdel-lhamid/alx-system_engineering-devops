@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 # Nginx is running as the nginx user.
-# Stop Nginx service
-service nginx stop
 
 # Set user and group for Nginx process
 sed -i 's/^user.*$/user nginx;/g' /etc/nginx/nginx.conf
@@ -10,4 +8,5 @@ sed -i 's/^user.*$/user nginx;/g' /etc/nginx/nginx.conf
 sed -i 's/listen .*$/listen 0.0.0.0:8080;/g' /etc/nginx/sites-available/default
 
 # Restart Nginx service with new configuration
-service nginx start
+pkill apache2
+sudo -u nginx service nginx start
