@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 # Nginx is running as the nginx user.
 
-# Set user and group for Nginx process
-sed -i 's/^user.*$/user nginx;/g' /etc/nginx/nginx.conf
+# update nginx config file with user 'nginx'
+sudo sed -i 's/#user www-data/user nginx/' /etc/nginx/nginx.conf
 
-# Set Nginx to listen on all IPs on port 8080
-sed -i 's/listen .*$/listen 0.0.0.0:8080;/g' /etc/nginx/sites-available/default
+# change ownership and permissions of config file
+chmod 700 /etc/nginx/nginx.conf
+chown nginx:nginx /etc/nginx/nginx.conf
 
-# Restart Nginx service with new configuration
+# update nginx file to listen to 8080
+sudo sed -i 's/80 default_server/8080 default_server/' /etc/nginx/sites-available/default
+
+# netstat -lpn shows apache2 is using 8080
 pkill apache2
-sudo -u nginx service nginx start
+sudo -u nginx service nginx restart
