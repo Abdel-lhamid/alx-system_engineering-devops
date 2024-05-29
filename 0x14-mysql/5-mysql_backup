@@ -1,17 +1,11 @@
 #!/usr/bin/env bash
 # Backup and compress all MySQL databases
 
-# Check if the password argument is provided
-if [ -z "$1" ]; then
-    echo "Please provide the password for the MySQL root user as an argument."
-    exit 1
-fi
-
 # Get the current date in the desired format
 backup_date=$(date +%d-%m-%Y)
 
 # Create the MySQL dump file
-mysqldump -u root -p"$1" --all-databases > backup.sql
+mysqldump --all-databases -u root --password="$1" > backup.sql
 
 # Create the compressed archive
 tar -czvf "$backup_date.tar.gz" backup.sql
