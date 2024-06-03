@@ -18,7 +18,8 @@ if __name__ == "__main__":
                 "completed": ts.get("completed"),
                 "username": user.get("username")
             } for ts in requests.get((url +
-                                     "{}/todos").format(user.get("id"))).json()]
+                                     "{}/todos")
+                                     .format(user.get("id"))).json()]
             for user in users}
 
     with open("todo_all_employees.json", "w", newline="") as jsonfile:
