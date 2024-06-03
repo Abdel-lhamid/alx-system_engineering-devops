@@ -22,4 +22,3 @@ if __name__ == "__main__":
             } for ts in todos]}
     with open("{}.json".format(empl_id), "w", newline="") as jsonfile:
         json.dump(data, jsonfile)
-
