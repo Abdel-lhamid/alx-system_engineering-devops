@@ -13,8 +13,8 @@ def number_of_subscribers(subreddit):
     url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'alx-stud-linux'})
-    req = requests.get(url, headers=headers).json()
-    subs = req.get('data', {}).get('subscribers')
-    if response.status_code == 404 or not subs:
+    req = requests.get(url, headers=headers, allow_redirects=False)
+    subs = req.json().get('data').get('subscribers')
+    if req.status_code == 404 or not subs:
         return 0
     return subs
