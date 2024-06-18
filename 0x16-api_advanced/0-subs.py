@@ -14,7 +14,9 @@ def number_of_subscribers(subreddit):
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'alx-stud-linux'})
     req = requests.get(url, headers=headers, allow_redirects=False)
+    if req.status_code == 404:
+        return 0
     subs = req.json().get('data').get('subscribers')
-    if req.status_code == 404 or not subs:
+    if not subs:
         return 0
     return subs
